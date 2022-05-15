@@ -1,0 +1,37 @@
+线程的核心内容：
+# 1. 线程的概念
+一个线程指的是进程中一个单一顺序的控制流（或者说是执行路线、执行流）， 一个进程中可以创建多个线程， 多个线程实现并发运行， 每个线程执行不同的任务。
+
+# 2. 线程的特点
+同一进程中的多个线程将共享该进程中的全部系统资源，如虚拟地址空间，文件描述符和信号处理等。同一进程中的多个线程有各自的调用栈（call stack，我们称为线程栈），
+自己的寄存器环境（register context） 、 自己的线程本地存储（thread-local storage）
+
+# 3. 线程的串行、并行、并发
+	串行：按照顺序执行任务
+	/* 指的是一种顺序执行，譬如先完成task1，接着做task2、直到完成task2，然后做task3、直到完成task3……依次按照顺序完成每一件事情，
+	 * 必须要完成上一件事才能去做下一件事，有一个执行单元，这就是串行运行。*/
+
+
+# 4. 线程ID
+每个进程都有一个进程 ID ，每个线程也有其对应的标识，称为线程 ID。进程 ID 在整个系统中是唯一的，但线程 ID 不同，线程 ID 只有在它所属的进程上下文中才有意义。
+作用：
+	利用线程 ID 来标识要操作的目标线程。
+	以特定线程的线程 ID 作为动态数据结构的标签，既可以用来标识整个数据结构的创建者或属主线程，又可以确定随后对该数据结构执行操作的具体线程。
+EXcode:
+	int pthread_equal(pthread_t t1, pthread_t t2); /* 检查两个线程 ID 是否相等 */
+
+# 5. 线程的创建
+其它线程通常由主线程来创建（调用pthread_create 创建一个新的线程） ，那么创建的新线程就是主线程的子线程。
+主线程通常会在最后结束运行，执行各种清理工作，譬如回收各个子线程。
+EXcode：
+	/*
+	 * @description: 创建出来的新线程是主线程的子线程
+	 * @param - thread :pthread_create()成功返回时，新创建的线程的线程 ID 会保存在参数 thread 所指向的内存中。
+	 * @param - attr   :指向 pthread_attr_t 类型的缓冲区， pthread_attr_t 数据类型定义了线程的各种属性
+	 * @param - start_routine   :start_routine 是一个函数指针,新创建的线程从 start_routine()函数开始运行
+	 * @param - arg    :传递给 start_routine()函数的参数。
+	 * @return         :成功返回 0；失败时将返回一个错误号
+	 */
+	int pthread_create(pthread_t *thread, const pthread_attr_t *attr, void *(*start_routine) (void *), void *arg);
+	
+# 6. 线程的特点
